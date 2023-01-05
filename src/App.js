@@ -2,6 +2,7 @@ import './App.css';
 import { Hello } from './Hello';
 import { Title } from './Title';
 import Button from './components/Button';
+import Table from './components/Table';
 
 function App() {
   // const Hello = () => 'Hello';
@@ -50,19 +51,7 @@ function App() {
       <Title name="Suratman" /> <br />
       <Title /> <br />
       <Button onClick={() => alert('click save')}>Save</Button>
-      <ul>
-        {users.map((user, index) => {
-          return (
-            <>
-              {user.status && (
-                <li
-                  key={index}
-                >{`Nama saya ${user.name} dan usia saya adalah ${user.age} tahun`}</li>
-              )}
-            </>
-          );
-        })}
-      </ul>
+      <Table users={users} />
     </>
   );
 }
