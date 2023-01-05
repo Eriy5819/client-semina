@@ -13,16 +13,29 @@ function App() {
     tahunLahir: '',
     usia: '',
   });
+  const [error, setError] = useState('');
 
   const click = () => {
     setNumber(number + 1);
   };
 
   const handleSubmit = () => {
-    setForm({ ...form, usia: 2022 - form.tahunLahir });
+    if (form.name === '') {
+      setError('nama tidak boleh kosong');
+    } else if (form.tahunLahir === '') {
+      setError('tanggal lahir tidak boleh kosong');
+    } else {
+      setForm({ ...form, usia: 2022 - form.tahunLahir });
+    }
   };
 
   const handleChange = (e) => {
+    setError('');
+    if (e.target.name === 'name') {
+      if (e.target.value.length < 3) {
+        setError('Minimal 3 karakter');
+      }
+    }
     setForm({ ...form, [e.target.name]: e.target.value });
   };
   return (
@@ -48,9 +61,13 @@ function App() {
         onChange={handleChange}
       />
       <br />
+      <Input type='number' value={form.tahunLahir} onChange={handleChange} />
+      <br />
       Umur saya : {form.usia}
       <br />
       <Button onClick={handleSubmit}>Submit</Button>
+      <br />
+      <p style={{ color: 'red' }}>{error}</p>
     </>
   );
 }
