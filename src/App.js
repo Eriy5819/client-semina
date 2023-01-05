@@ -1,57 +1,39 @@
+import { useState } from 'react';
 import './App.css';
-import { Hello } from './Hello';
-import { Title } from './Title';
 import Button from './components/Button';
-import Table from './components/Table';
 
 function App() {
-  // const Hello = () => 'Hello';
-  // function Hello() {
-  //   return 'Hello';
-  // }
-  // const Hello = function () {
-  //   return 'Hello';
-  // };
+  const [number, setNumber] = useState(0);
+  const [name, setName] = useState('');
+  const [TahunLahir, setTahunLahir] = useState('');
 
-  const users = [
-    {
-      _id: 1,
-      name: 'Feriy',
-      age: 18,
-      status: true,
-    },
-    {
-      _id: 2,
-      name: 'Eriy',
-      age: 18,
-      status: true,
-    },
-    {
-      _id: 3,
-      name: 'Ricky',
-      age: 16,
-      status: false,
-    },
-  ];
+  const click = () => {
+    setNumber(number + 1);
+  };
 
-  const isLogin = false;
-
+  const handleSubmit = () => {};
   return (
     <>
-      <h1>Welcome to React</h1>
-      <ul>
-        <li>Home</li>
-        <li>Users</li>
-        <li>{isLogin ? 'Sudah login' : 'Login'}</li>
-      </ul>
-      <h1>
-        <Hello />
-      </h1>
-      <Title name="Eriy" /> <br />
-      <Title name="Suratman" /> <br />
-      <Title /> <br />
-      <Button onClick={() => alert('click save')}>Save</Button>
-      <Table users={users} />
+      <h1>Counter App</h1>
+      <p>Nilai counter saat ini {number}</p>
+      <Button onClick={click}>Click me</Button>
+      <hr />
+      <h1>Aplikasi input data diri</h1>
+      Name:{' '}
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <br />
+      Tahun lahir:{' '}
+      <input
+        type="text"
+        value={TahunLahir}
+        onChange={(e) => TahunLahir(e.target.value)}
+      />
+      <br />
+      <Button onClick={handleSubmit}>Submit</Button>
     </>
   );
 }
