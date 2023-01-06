@@ -1,74 +1,71 @@
-import { useState } from 'react';
 import './App.css';
-import Button from './components/Button';
-import Input from './components/Input';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useParams,
+} from 'react-router-dom';
 
-function App() {
-  const [number, setNumber] = useState(0);
-  // const [name, setName] = useState('');
-  // const [TahunLahir, setTahunLahir] = useState('');
-  // const [usia, setUsia] = useState('');
-  const [form, setForm] = useState({
-    name: '',
-    tahunLahir: '',
-    usia: '',
-  });
-  const [error, setError] = useState('');
-
-  const click = () => {
-    setNumber(number + 1);
-  };
-
-  const handleSubmit = () => {
-    if (form.name === '') {
-      setError('nama tidak boleh kosong');
-    } else if (form.tahunLahir === '') {
-      setError('tanggal lahir tidak boleh kosong');
-    } else {
-      setForm({ ...form, usia: 2022 - form.tahunLahir });
-    }
-  };
-
-  const handleChange = (e) => {
-    setError('');
-    if (e.target.name === 'name') {
-      if (e.target.value.length < 3) {
-        setError('Minimal 3 karakter');
-      }
-    }
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+function Home() {
+  return <h1>Home</h1>;
+}
+function Categories() {
   return (
     <>
-      <h1>Counter App</h1>
-      <p>Nilai counter saat ini {number}</p>
-      <Button onClick={click}>Click me</Button>
-      <hr />
-      <h1>Aplikasi input data diri</h1>
-      Name:{' '}
-      <Input
-        type='text'
-        value={form.name}
-        name='name'
-        onChange={handleChange}
-      />
-      <br />
-      Tahun lahir:{' '}
-      <Input
-        type='number'
-        value={form.tahunLahir}
-        name='tahunLahir'
-        onChange={handleChange}
-      />
-      <br />
-      <Input type='number' value={form.tahunLahir} onChange={handleChange} />
-      <br />
-      Umur saya : {form.usia}
-      <br />
-      <Button onClick={handleSubmit}>Submit</Button>
-      <br />
-      <p style={{ color: 'red' }}>{error}</p>
+      <h1>Categories</h1>
+      <table>
+        <thead>
+          <td>Id</td>
+          <td>Categories</td>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>
+              <Link to={'/categories/348239482'}>Seminar</Link>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </>
+  );
+}
+function CategoriesDetail() {
+  let params = useParams();
+  console.log('params >>');
+  console.log(params);
+  return <h1>Categories : {params.id}</h1>;
+}
+function About() {
+  return <h1>About</h1>;
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <ul>
+        <li>
+          <Link to={'/'}>Home</Link>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <Link to={'categories'}>Categories</Link>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <Link to={'about'}>About</Link>
+        </li>
+      </ul>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='categories' element={<Categories />} />
+        <Route path='categories/:id' element={<CategoriesDetail />} />
+        <Route path='about' element={<About />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
