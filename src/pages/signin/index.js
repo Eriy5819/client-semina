@@ -12,14 +12,17 @@ function PageSignin() {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post('http://localhost:9000/v1/cms/auth/signin', {
-        email: form.email,
-        password: form.password,
-      });
+      const res = await axios.post(
+        'http://localhost:9000/api/v1/cms/auth/signin',
+        {
+          email: form.email,
+          password: form.password,
+        }
+      );
 
       console.log(res);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.msg);
     }
   };
 
