@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Container, Form, Card } from 'react-bootstrap';
-import SButton from '../../components/Button';
-import TextInputWithLabel from '../../components/TextInputWithLabel';
+import { Container, Card } from 'react-bootstrap';
+
 import axios from 'axios';
 import SAlert from '../../components/Alert';
 import { useNavigate } from 'react-router-dom';
+import { config } from '../../configs';
+import SForm from './form';
 
 function PageSignin() {
   const navigate = useNavigate();
@@ -26,14 +27,13 @@ function PageSignin() {
     try {
       setIsLoading(true);
       const res = await axios.post(
-        'http://localhost:9000/api/v1/cms/auth/signin',
-        {
-          email: form.email,
-          password: form.password,
-        }
+        `${config.api_host_dev}/cms/auth/signin`,
+        form
+        // email: form.email,
+        // password: form.password,
       );
 
-      console.log(res.data.data.token);
+      localStorage.setItem('token', res.data.data.token);
       setIsLoading(false);
       navigate('/');
     } catch (error) {
@@ -59,34 +59,12 @@ function PageSignin() {
       <Card style={{ width: '50%' }} className='m-auto mt-5'>
         <Card.Body>
           <Card.Title className='text-center'>Form Singin</Card.Title>
-          <Form>
-            <TextInputWithLabel
-              label='Email address'
-              name='email'
-              value={form.email}
-              type='email'
-              placeholder='Enter email'
-              onChange={handleChange}
-            />
-
-            <TextInputWithLabel
-              label='Password'
-              name='password'
-              value={form.password}
-              type='password'
-              placeholder='Password'
-              onChange={handleChange}
-            />
-
-            <SButton
-              loading={isLoading}
-              disabled={isLoading}
-              variant='primary'
-              action={handleSubmit}
-            >
-              Submit
-            </SButton>
-          </Form>
+          <SForm
+            form={form}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            isLoading={isLoading}
+          />
         </Card.Body>
       </Card>
     </Container>
