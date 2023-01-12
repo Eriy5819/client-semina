@@ -2,7 +2,7 @@ import React from 'react';
 import { Breadcrumb } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-export default function SBreadCrumb(textSecond, textThird, urlSecond) {
+export default function SBreadCrumb({ textSecond, textThird, urlSecond }) {
   const navigate = useNavigate();
   return (
     <Breadcrumb className='my-2'>
