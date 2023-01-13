@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Table, Spinner } from 'react-bootstrap';
 import SButton from '../../components/Button';
 import SBreadCrumb from '../../components/Breadcrumb';
 import SNavbar from '../../components/Navbar';
@@ -11,32 +11,32 @@ export default function PageCategories() {
   const token = localStorage.getItem('token');
 
   const [data, setData] = useState([]);
-  console.log('data');
-  console.log(data);
-
-  const getCategoriesAPI = async () => {
-    try {
-      const res = await axios.get(`${config.api_host_dev}/cms/categories`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(res.data);
-      setData(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const getCategoriesAPI = async () => {
+      setIsLoading(true);
+      try {
+        const res = await axios.get(`${config.api_host_dev}/cms/categories`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setTimeout(() => {
+          setData(res.data.data);
+          setIsLoading(false);
+        }, 4000);
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error);
+      }
+    };
     getCategoriesAPI();
-    console.log('useEffect');
   }, []);
 
   if (!token) return <Navigate to='/signin' replace={true} />;
   return (
     <>
-      {console.log('render ')}
       <SNavbar />
       <Container className='mt-3'>
         <SBreadCrumb textSecond='Categories' />
@@ -44,30 +44,29 @@ export default function PageCategories() {
         <Table className='mt-3' striped bordered hover variant='dark'>
           <thead>
             <tr>
-              <th>#</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Username</th>
+              <th>No</th>
+              <th>Name</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td colSpan={2}>Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
+            {isLoading ? (
+              <tr>
+                <td colSpan={data.length + 1} style={{ textAlign: 'center' }}>
+                  <div className='flex item-center justify-center'>
+                    <Spinner />
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              data.map((data, index) => (
+                <tr key={index}>
+                  <td>{(index += 1)}</td>
+                  <td>{data.name}</td>
+                  <td>Otto</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </Table>
       </Container>
