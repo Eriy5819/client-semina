@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { Container, Card } from 'react-bootstrap';
-import axios from 'axios';
 import SAlert from '../../components/Alert';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { config } from '../../configs';
+import { useNavigate } from 'react-router-dom';
 import SForm from './form';
+import { postData } from '../../utils/fetch';
+import { useDispatch } from 'react-redux';
+import { userLogin } from '../../redux/auth/actions';
 
 function PageSignin() {
-  const token = localStorage.getItem('token');
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [form, setForm] = useState({
     email: '',
@@ -25,12 +27,9 @@ function PageSignin() {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.post(
-        `${config.api_host_dev}/cms/auth/signin`,
-        form
-      );
+      const res = await postData(`/cms/auth/signin`, form);
 
-      localStorage.setItem('token', res.data.data.token);
+      dispatch(userLogin(res.data.data.token, res.data.data.role));
       setIsLoading(false);
       navigate('/');
     } catch (error) {
@@ -47,8 +46,6 @@ function PageSignin() {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
-  if (token) return <Navigate to='/' replace={true} />;
 
   return (
     <Container md={12}>
