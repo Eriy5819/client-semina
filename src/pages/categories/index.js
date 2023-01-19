@@ -1,48 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Container, Table, Spinner } from 'react-bootstrap';
 import SButton from '../../components/Button';
 import SBreadCrumb from '../../components/Breadcrumb';
-import SNavbar from '../../components/Navbar';
-import axios from 'axios';
-import { config } from '../../configs';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCategories } from '../../redux/categories/action';
+import { accessCategories } from '../../const/access';
 
 export default function PageCategories() {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const dispatch = useDispatch();
 
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [access, setAccess] = useState({
+    tambah: false,
+    hapus: false,
+    edit: false,
+  });
+
+  const checkAccess = () => {
+    let { role } = localStorage.getItem('auth')
+      ? JSON.parse(localStorage.getItem('auth'))
+      : {};
+
+    const access = { tambah: false, hapus: false, edit: false };
+    Object.keys(accessCategories).forEach(function (key, index) {
+      if (accessCategories[key].indexOf(role) >= 0) {
+        access[key] = true;
+      }
+    });
+    setAccess(access);
+  };
 
   useEffect(() => {
-    const getCategoriesAPI = async () => {
-      setIsLoading(true);
-      try {
-        const res = await axios.get(`${config.api_host_dev}/cms/categories`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setData(res.data.data);
-        setIsLoading(false);
-      } catch (error) {
-        setIsLoading(false);
-        console.log(error);
-      }
-    };
-    getCategoriesAPI();
+    checkAccess();
   }, []);
 
-  if (!token) return <Navigate to='/signin' replace={true} />;
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
 
   return (
     <>
-      <SNavbar />
       <Container className='mt-3'>
         <SBreadCrumb textSecond='Categories' />
-        <SButton action={() => navigate('/categories/create')}>Tambah</SButton>
-        <Table className='mt-3' striped bordered hover variant='dark'>
+
+        {access.tambah && (
+          <SButton action={() => navigate('/categories/create')}>
+            Tambah
+          </SButton>
+        )}
+        {/* <Table className='mt-3' striped bordered hover variant='dark'>
           <thead>
             <tr>
               <th>No</th>
@@ -69,7 +76,7 @@ export default function PageCategories() {
               ))
             )}
           </tbody>
-        </Table>
+        </Table> */}
       </Container>
     </>
   );
