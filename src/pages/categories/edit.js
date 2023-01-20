@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SAlert from '../../components/Alert';
 import SBreadCrumb from '../../components/Breadcrumb';
 import Form from './form';
@@ -8,7 +8,7 @@ import Form from './form';
 export default function CategoriesEdit() {
   const navigate = useNavigate();
 
-  const { categoryId } = useParams();
+  // const { categoryId } = useParams();
   const [form, setForm] = useState({
     name: '',
   });

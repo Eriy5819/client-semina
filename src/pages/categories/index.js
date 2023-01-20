@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Table, Spinner } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import SButton from '../../components/Button';
 import SBreadCrumb from '../../components/Breadcrumb';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories } from '../../redux/categories/action';
 import { accessCategories } from '../../const/access';
+import Table from '../../components/TableWithAction';
 
 export default function PageCategories() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const categories = useSelector((state) => state.categories);
   const [access, setAccess] = useState({
     tambah: false,
     hapus: false,
@@ -37,7 +39,11 @@ export default function PageCategories() {
 
   useEffect(() => {
     dispatch(fetchCategories());
-  }, []);
+  }, [dispatch]);
+
+  const handleDelete = (id) => {
+    //
+  };
 
   return (
     <>
@@ -45,38 +51,21 @@ export default function PageCategories() {
         <SBreadCrumb textSecond='Categories' />
 
         {access.tambah && (
-          <SButton action={() => navigate('/categories/create')}>
+          <SButton
+            className='mb-3'
+            action={() => navigate('/categories/create')}
+          >
             Tambah
           </SButton>
         )}
-        {/* <Table className='mt-3' striped bordered hover variant='dark'>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Name</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr>
-                <td colSpan={data.length + 1} style={{ textAlign: 'center' }}>
-                  <div className='flex item-center justify-center'>
-                    <Spinner />
-                  </div>
-                </td>
-              </tr>
-            ) : (
-              data.map((data, index) => (
-                <tr key={index}>
-                  <td>{(index += 1)}</td>
-                  <td>{data.name}</td>
-                  <td>Otto</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </Table> */}
+        <Table
+          status={categories.status}
+          thead={['Nama', 'Aksi']}
+          data={categories.data}
+          tbody={['name']}
+          editUrl={access.edit ? `/categories/edit` : null}
+          deleteAction={access.hapus ? (id) => handleDelete(id) : null}
+        />
       </Container>
     </>
   );
