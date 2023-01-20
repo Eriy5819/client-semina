@@ -21,7 +21,7 @@ export default function CategoriesForm({
         onChange={handleChange}
       />
       <SButton variant='primary' action={handleSubmit} loading={isLoading}>
-        {edit ? 'ubah' : 'Simpan'}
+        {edit ? 'Ubah' : 'Simpan'}
       </SButton>
     </Form>
   );

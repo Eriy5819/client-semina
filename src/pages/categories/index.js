@@ -6,12 +6,15 @@ import SBreadCrumb from '../../components/Breadcrumb';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories } from '../../redux/categories/action';
 import { accessCategories } from '../../const/access';
+import { setNotif } from '../../redux/notif/actions';
 import Table from '../../components/TableWithAction';
+import SAlert from '../../components/Alert';
 
 export default function PageCategories() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const notif = useSelector((state) => state.notif);
   const categories = useSelector((state) => state.categories);
   const [access, setAccess] = useState({
     tambah: false,
@@ -58,6 +61,11 @@ export default function PageCategories() {
             Tambah
           </SButton>
         )}
+
+        {notif.status && (
+          <SAlert type={notif.typeNotif} message={notif.message} />
+        )}
+
         <Table
           status={categories.status}
           thead={['Nama', 'Aksi']}

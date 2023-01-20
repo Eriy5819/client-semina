@@ -27,7 +27,7 @@ export async function postData(url, payload, formData) {
 
     return await axios.post(`${config.api_host_dev}${url}`, payload, {
       headers: {
-        Authorization: `Bearer${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': formData ? 'multipart/form-data' : 'application/json',
       },
     });
