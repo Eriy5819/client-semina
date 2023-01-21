@@ -44,7 +44,7 @@ export async function putData(url, payload) {
 
     return await axios.put(`${config.api_host_dev}${url}`, payload, {
       headers: {
-        Authorization: `Bearer${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
   } catch (error) {
@@ -60,7 +60,7 @@ export async function deleteData(url) {
 
     return await axios.delete(`${config.api_host_dev}${url}`, {
       headers: {
-        Authorization: `Bearer${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
   } catch (error) {

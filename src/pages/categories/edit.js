@@ -40,7 +40,7 @@ function CategoriesEdit() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    const res = await putData(`api/v1/categories/${categoryId}`, form);
+    const res = await putData(`/cms/categories/${categoryId}`, form);
     if (res?.data?.data) {
       dispatch(
         setNotif(

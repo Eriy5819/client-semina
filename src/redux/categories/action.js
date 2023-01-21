@@ -6,6 +6,7 @@ import {
 
 import { getData } from '../../utils/fetch';
 import debounce from 'debounce-promise';
+import { clearNotif } from '../notif/actions';
 
 let debounceFetchCategories = debounce(getData, 1000);
 
@@ -36,9 +37,9 @@ export const fetchCategories = () => {
     dispatch(startFetchingCategories());
 
     try {
-      /* setTimeout(() => {
-            dispatch()
-        }, 3000); */
+      setTimeout(() => {
+        dispatch(clearNotif());
+      }, 3000);
 
       let res = await debounceFetchCategories('/cms/categories');
 

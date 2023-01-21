@@ -6,9 +6,11 @@ import SBreadCrumb from '../../components/Breadcrumb';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories } from '../../redux/categories/action';
 import { accessCategories } from '../../const/access';
+import Swal from 'sweetalert2';
 import { setNotif } from '../../redux/notif/actions';
 import Table from '../../components/TableWithAction';
 import SAlert from '../../components/Alert';
+import { deleteData } from '../../utils/fetch';
 
 export default function PageCategories() {
   const navigate = useNavigate();
@@ -45,7 +47,28 @@ export default function PageCategories() {
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    //
+    Swal.fire({
+      title: 'Apa kamu yakin?',
+      text: 'Anda tidak akan dapat mengembalikan ini!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Iya, Hapus',
+      cancelButtonText: 'Batal',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await deleteData(`/cms/categories/${id}`);
+        dispatch(
+          setNotif(
+            true,
+            'success',
+            `berhasil hapus kategori ${res.data.data.name}`
+          )
+        );
+        dispatch(fetchCategories());
+      }
+    });
   };
 
   return (
