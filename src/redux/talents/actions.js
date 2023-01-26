@@ -17,7 +17,7 @@ export const startFetchingTalents = () => {
   };
 };
 
-export const successFetchingTalents = () => {
+export const successFetchingTalents = ({ talents }) => {
   return {
     type: SUCCESS_FETCHING_TALENTS,
     talents,
@@ -26,7 +26,7 @@ export const successFetchingTalents = () => {
 
 export const errorFetchingTalents = () => {
   return {
-    return: ERROR_FETCHING_TALENTS,
+    type: ERROR_FETCHING_TALENTS,
   };
 };
 
@@ -45,7 +45,7 @@ export const fetchTalents = () => {
 
       let res = await debounceFetchTalents('/cms/talents', params);
 
-      res.data.data.foreach((res) => {
+      res.data.data.forEach((res) => {
         res.avatar = res.image.name;
       });
 

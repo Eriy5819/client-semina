@@ -24,12 +24,12 @@ export default function reducer(state = initialState, action) {
       return { ...state, status: statuslist.process };
 
     case ERROR_FETCHING_TALENTS:
-      return { ...state, state: statuslist.error };
+      return { ...state, status: statuslist.error };
 
     case SUCCESS_FETCHING_TALENTS:
       return {
         ...state,
-        state: statuslist.success,
+        status: statuslist.success,
         data: action.talents,
       };
 
@@ -38,6 +38,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         keyword: action.keyword,
       };
+
     default:
       return state;
   }

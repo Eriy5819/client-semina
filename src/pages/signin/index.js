@@ -34,7 +34,7 @@ function PageSignin() {
       navigate('/');
     } catch (error) {
       setIsLoading(false);
-      console.log(error.response.data.msg);
+      console.log(error);
       setAlert({
         status: true,
         message: error?.response?.data?.msg ?? 'Internal Server Error',
