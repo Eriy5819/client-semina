@@ -4,7 +4,7 @@ import { fetchTalents, setKeyword } from '../../redux/talents/actions';
 import SBreadCrumb from '../../components/Breadcrumb';
 import SButton from '../../components/Button';
 import STable from '../../components/TableWithAction';
-import SSearcInput from '../../components/SearchInput';
+import SSearchInput from '../../components/SearchInput';
 import SAlert from '../../components/Alert';
 import Swal from 'sweetalert2';
 import { deleteData } from '../../utils/fetch';
@@ -78,10 +78,10 @@ function TalentsPage() {
       <SBreadCrumb textSecond={'Talents'} />
       {access.tambah && (
         <div className='mb-3'>
-          <SButton action={() => navigate('/talents/create')}>Tambh</SButton>
+          <SButton action={() => navigate('/talents/create')}>Tambah</SButton>
         </div>
       )}
-      <SSearcInput
+      <SSearchInput
         query={talents.keyword}
         handleChange={(e) => dispatch(setKeyword(e.target.value))}
       />

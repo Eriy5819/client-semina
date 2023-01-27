@@ -7,7 +7,7 @@ import {
 
 const statuslist = {
   idle: 'idle',
-  process: 'start',
+  process: 'process',
   success: 'success',
   error: 'error',
 };
