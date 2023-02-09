@@ -10,6 +10,8 @@ import { setNotif } from '../../redux/notif/actions';
 import {
   fetchListCategories,
   fetchListTalents,
+  fetchListEvents,
+  fetchListTickets,
 } from '../../redux/lists/actions';
 
 function EventsCreate() {
@@ -25,6 +27,7 @@ function EventsCreate() {
     about: '',
     venueName: '',
     tagline: '',
+    statusEvent: '',
     keyPoint: [''],
     tickets: [
       {
@@ -50,12 +53,14 @@ function EventsCreate() {
   useEffect(() => {
     dispatch(fetchListTalents());
     dispatch(fetchListCategories());
+    dispatch(fetchListEvents());
+    dispatch(fetchListTickets());
   }, [dispatch]);
 
   const uploadImage = async (file) => {
     let formData = new FormData();
     formData.append('avatar', file);
-    const res = await postData('/cms/image', formData, true);
+    const res = await postData('/cms/images', formData, true);
     return res;
   };
 
@@ -102,7 +107,11 @@ function EventsCreate() {
           [e.target.name]: '',
         });
       }
-    } else if (e.target.name === 'category' || e.target.name === 'talent') {
+    } else if (
+      e.target.name === 'category' ||
+      e.target.name === 'talent' ||
+      e.target.name === 'statusEvent'
+    ) {
       console.log('e.target.name');
       console.log(e.target.name);
       setForm({ ...form, [e.target.name]: e });
@@ -127,6 +136,8 @@ function EventsCreate() {
       talent: form.talent.value,
       status: form.status,
       tickets: form.tickets,
+      statusEvent:
+        form.statusEvent.value === 'Published' ? 'Published' : 'Draft',
     };
 
     const res = await postData('/cms/events', payload);

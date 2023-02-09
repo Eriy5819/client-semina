@@ -27,6 +27,28 @@ export default function EventsForm({
   handleMinusTicket,
   handleChangeTicket,
 }) {
+  const statusEvent = [
+    {
+      value: 'Published',
+      label: 'Published',
+      name: 'statusEvent',
+      target: { value: 'Published', name: 'statusEvent' },
+    },
+    {
+      value: 'Draft',
+      label: 'Draft',
+      name: 'statusEvent',
+      target: { value: 'Draft', name: 'statusEvent' },
+    },
+  ];
+
+  // const handleTicket =  async e => {
+  //   if(e.target.name === 'statusEvent') {
+  //     setForm({...form, [e.target.name]: e})
+  //   }else {
+  //     setForm({...form, [e.target.name]: e.target.value})
+  //   }
+  // }
   return (
     <Form className='mb-2'>
       <Row>
@@ -170,7 +192,7 @@ export default function EventsForm({
           <Col sm={6}>
             <TextInputWithLabel
               placeholder={'Masukan tipe tiket'}
-              label={'type'}
+              label={'Type'}
               name='type'
               value={tic.type}
               type='text'
@@ -197,7 +219,7 @@ export default function EventsForm({
               onChange={(e) => handleChangeTicket(e, index)}
             />
           </Col>
-          <Col sm={index !== 0 ? 5 : 6}>
+          {/*           <Col sm={index !== 0 ? 5 : 6}>
             <TextInputWithLabel
               placeholder={'Masukan status'}
               label={'Status'}
@@ -205,6 +227,16 @@ export default function EventsForm({
               value={tic.status}
               type='text'
               onChange={(e) => handleChangeTicket(e, index)}
+            />
+          </Col> */}
+          <Col sm={index !== 0 ? 5 : 6}>
+            <SelectBox
+              label={'Status Ticket'}
+              placeholder={'Masukan Status Ticket'}
+              value={lists.statusEvent}
+              options={statusEvent}
+              isClearable={true}
+              handleChange={(e) => handleChange(e)}
             />
           </Col>
           {index !== 0 && (

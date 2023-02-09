@@ -1,13 +1,16 @@
 import {
-  START_FETCHING_LIST_CATEGORIES,
-  SUCCESS_FETCHING_LIST_CATEGORIES,
-  ERROR_FETCHING_LIST_CATEGORIES,
-  START_FETCHING_LIST_TALENTS,
-  SUCCESS_FETCHING_LIST_TALENTS,
-  ERROR_FETCHING_LIST_TALENTS,
-  START_FETCHING_LIST_EVENTS,
-  SUCCESS_FETCHING_LIST_EVENTS,
-  ERROR_FETCHING_LIST_EVENTS,
+  START_FETCHING_LISTS_CATEGORIES,
+  SUCCESS_FETCHING_LISTS_CATEGORIES,
+  ERROR_FETCHING_LISTS_CATEGORIES,
+  START_FETCHING_LISTS_TALENTS,
+  SUCCESS_FETCHING_LISTS_TALENTS,
+  ERROR_FETCHING_LISTS_TALENTS,
+  START_FETCHING_LISTS_EVENTS,
+  SUCCESS_FETCHING_LISTS_EVENTS,
+  ERROR_FETCHING_LISTS_EVENTS,
+  START_FETCHING_LISTS_TICKETS,
+  ERROR_FETCHING_LISTS_TICKETS,
+  SUCCESS_FETCHING_LISTS_TICKETS,
 } from './constants';
 
 const statuslist = {
@@ -24,47 +27,62 @@ const initialState = {
   statusTalents: statuslist.idle,
   events: [],
   statusEvents: statuslist.idle,
+  tickets: [],
+  statusTickets: statuslist.idle,
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case START_FETCHING_LIST_CATEGORIES:
+    case START_FETCHING_LISTS_CATEGORIES:
       return { ...state, statusCategories: statuslist.process };
 
-    case ERROR_FETCHING_LIST_CATEGORIES:
+    case ERROR_FETCHING_LISTS_CATEGORIES:
       return { ...state, statusCategories: statuslist.error };
 
-    case SUCCESS_FETCHING_LIST_CATEGORIES:
+    case SUCCESS_FETCHING_LISTS_CATEGORIES:
       return {
         ...state,
         statusCategories: statuslist.success,
         categories: action.categories,
       };
 
-    case START_FETCHING_LIST_TALENTS:
+    case START_FETCHING_LISTS_TALENTS:
       return { ...state, statusTalents: statuslist.process };
 
-    case ERROR_FETCHING_LIST_TALENTS:
+    case ERROR_FETCHING_LISTS_TALENTS:
       return { ...state, statusTalents: statuslist.error };
 
-    case SUCCESS_FETCHING_LIST_TALENTS:
+    case SUCCESS_FETCHING_LISTS_TALENTS:
       return {
         ...state,
         statusTalents: statuslist.success,
         talents: action.talents,
       };
 
-    case START_FETCHING_LIST_EVENTS:
+    case START_FETCHING_LISTS_EVENTS:
       return { ...state, statusEvents: statuslist.process };
 
-    case ERROR_FETCHING_LIST_EVENTS:
+    case ERROR_FETCHING_LISTS_EVENTS:
       return { ...state, statusEvents: statuslist.error };
 
-    case SUCCESS_FETCHING_LIST_EVENTS:
+    case SUCCESS_FETCHING_LISTS_EVENTS:
       return {
         ...state,
         statusEvents: statuslist.success,
         events: action.events,
+      };
+
+    case START_FETCHING_LISTS_TICKETS:
+      return { ...state, statusTickets: statuslist.process };
+
+    case ERROR_FETCHING_LISTS_TICKETS:
+      return { ...state, statusTickets: statuslist.error };
+
+    case SUCCESS_FETCHING_LISTS_TICKETS:
+      return {
+        ...state,
+        statusTickets: statuslist.success,
+        tickets: action.tickets,
       };
 
     default:

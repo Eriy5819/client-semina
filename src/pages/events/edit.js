@@ -10,6 +10,8 @@ import { setNotif } from '../../redux/notif/actions';
 import {
   fetchListCategories,
   fetchListTalents,
+  fetchListEvents,
+  fetchListTickets,
 } from '../../redux/lists/actions';
 import moment from 'moment';
 
@@ -30,13 +32,13 @@ function EventsCreate() {
     tickets: [
       {
         type: '',
-        status: '',
         stock: '',
         price: '',
       },
     ],
     category: '',
     talent: '',
+    statusEvent: '',
   });
 
   const [alert, setAlert] = useState({
@@ -44,6 +46,7 @@ function EventsCreate() {
     type: '',
     message: '',
   });
+  console.log(form);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,6 +63,14 @@ function EventsCreate() {
       venueName: res.data.data.venueName,
       tagline: res.data.data.tagline,
       keyPoint: res.data.data.keyPoint,
+      statusEvent: {
+        label: res?.data?.data?.statusEvent,
+        target: {
+          name: 'statusEvent',
+          value: res?.data?.data?.statusEvent,
+        },
+        value: res?.data?.data?.statusEvent,
+      },
       category: {
         label: res?.data?.data?.category?.name,
         target: { name: 'category', value: res?.data?.data?.category?._id },
@@ -82,7 +93,9 @@ function EventsCreate() {
   useEffect(() => {
     dispatch(fetchListTalents());
     dispatch(fetchListCategories());
-  }, []);
+    dispatch(fetchListEvents());
+    dispatch(fetchListTickets());
+  }, [dispatch]);
 
   const uploadImage = async (file) => {
     let formData = new FormData();
@@ -133,7 +146,11 @@ function EventsCreate() {
           [e.target.name]: '',
         });
       }
-    } else if (e.target.name === 'category' || e.target.name === 'talent') {
+    } else if (
+      e.target.name === 'category' ||
+      e.target.name === 'talent' ||
+      e.target.name === 'statusEvent'
+    ) {
       setForm({ ...form, [e.target.name]: e });
     } else {
       setForm({ ...form, [e.target.name]: e.target.value });
@@ -156,6 +173,8 @@ function EventsCreate() {
       talent: form.talent.value,
       status: form.status,
       tickets: form.tickets,
+      statusEvent:
+        form.statusEvent.value === 'Published' ? 'Published' : 'Draft',
     };
 
     const res = await putData(`/cms/events/${eventId}`, payload);
@@ -163,6 +182,7 @@ function EventsCreate() {
       dispatch(
         setNotif(true, 'sucess', `berhasil ubah events ${res.data.data.title}`)
       );
+      // console.log(res);
 
       navigate('/events');
       setIsLoading(false);
@@ -207,7 +227,6 @@ function EventsCreate() {
     let _temp = [...form.tickets];
     _temp.push({
       type: '',
-      status: '',
       stock: '',
       price: '',
     });
@@ -239,7 +258,7 @@ function EventsCreate() {
       <SBreadCrumb
         textSecond={'Events'}
         urlSecond={'/events'}
-        textThird='Create'
+        textThird='Edit'
       />
       {alert.status && <SAlert type={alert.type} message={alert.message} />}
       <Form
