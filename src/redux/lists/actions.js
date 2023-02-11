@@ -11,6 +11,9 @@ import {
   START_FETCHING_LISTS_TICKETS,
   SUCCESS_FETCHING_LISTS_TICKETS,
   ERROR_FETCHING_LISTS_TICKETS,
+  START_FETCHING_LISTS_ORGANIZERS,
+  SUCCESS_FETCHING_LISTS_ORGANIZERS,
+  ERROR_FETCHING_LISTS_ORGANIZERS,
 } from './constants';
 
 import { getData } from '../../utils/fetch';
@@ -20,6 +23,7 @@ let debounceFetchListCategories = debounce(getData, 1000);
 let debounceFetchListTalents = debounce(getData, 1000);
 let debounceFetchListEvents = debounce(getData, 1000);
 let debounceFetchListTickets = debounce(getData, 1000);
+let debounceFetchListOrganizers = debounce(getData, 1000);
 
 export const startFetchingListCategories = () => {
   return {
@@ -209,6 +213,55 @@ export const fetchListTickets = () => {
       );
     } catch (error) {
       dispatch(errorFetchingListTickets());
+    }
+  };
+};
+
+// organizers
+
+export const startFetchingListOrganizers = () => {
+  return {
+    type: START_FETCHING_LISTS_ORGANIZERS,
+  };
+};
+
+export const successFetchingListOrganizers = ({ organizers }) => {
+  return {
+    type: SUCCESS_FETCHING_LISTS_ORGANIZERS,
+    organizers,
+  };
+};
+
+export const errorFetchingListOrganizers = () => {
+  return {
+    type: ERROR_FETCHING_LISTS_ORGANIZERS,
+  };
+};
+
+export const fetchListOrganizers = () => {
+  return async (dispatch) => {
+    dispatch(startFetchingListOrganizers());
+
+    try {
+      let res = await debounceFetchListOrganizers('/cms/users');
+
+      let _temp = [];
+
+      res.data.data.forEach((res) => {
+        _temp.push({
+          name: res.name,
+          email: res.email,
+          password: res.password,
+        });
+      });
+
+      dispatch(
+        successFetchingListOrganizers({
+          organizers: _temp,
+        })
+      );
+    } catch (error) {
+      dispatch(errorFetchingListOrganizers());
     }
   };
 };

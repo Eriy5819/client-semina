@@ -46,7 +46,6 @@ function EventsCreate() {
     type: '',
     message: '',
   });
-  console.log(form);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -257,7 +256,7 @@ function EventsCreate() {
     <Container>
       <SBreadCrumb
         textSecond={'Events'}
-        urlSecond={'/events'}
+        urlSecond={'/Events'}
         textThird='Edit'
       />
       {alert.status && <SAlert type={alert.type} message={alert.message} />}

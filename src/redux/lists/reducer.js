@@ -11,6 +11,9 @@ import {
   START_FETCHING_LISTS_TICKETS,
   ERROR_FETCHING_LISTS_TICKETS,
   SUCCESS_FETCHING_LISTS_TICKETS,
+  START_FETCHING_LISTS_ORGANIZERS,
+  SUCCESS_FETCHING_LISTS_ORGANIZERS,
+  ERROR_FETCHING_LISTS_ORGANIZERS,
 } from './constants';
 
 const statuslist = {
@@ -83,6 +86,19 @@ export default function reducer(state = initialState, action) {
         ...state,
         statusTickets: statuslist.success,
         tickets: action.tickets,
+      };
+
+    case START_FETCHING_LISTS_ORGANIZERS:
+      return { ...state, statusOrganizers: statuslist.process };
+
+    case ERROR_FETCHING_LISTS_ORGANIZERS:
+      return { ...state, statusOrganizers: statuslist.error };
+
+    case SUCCESS_FETCHING_LISTS_ORGANIZERS:
+      return {
+        ...state,
+        statusOrganizers: statuslist.success,
+        organizers: action.organizers,
       };
 
     default:
