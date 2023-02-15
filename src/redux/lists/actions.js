@@ -14,6 +14,9 @@ import {
   START_FETCHING_LISTS_ORGANIZERS,
   SUCCESS_FETCHING_LISTS_ORGANIZERS,
   ERROR_FETCHING_LISTS_ORGANIZERS,
+  START_FETCHING_LISTS_ADMINS,
+  SUCCESS_FETCHING_LISTS_ADMINS,
+  ERROR_FETCHING_LISTS_ADMINS,
 } from './constants';
 
 import { getData } from '../../utils/fetch';
@@ -24,6 +27,7 @@ let debounceFetchListTalents = debounce(getData, 1000);
 let debounceFetchListEvents = debounce(getData, 1000);
 let debounceFetchListTickets = debounce(getData, 1000);
 let debounceFetchListOrganizers = debounce(getData, 1000);
+let debounceFetchListAdmins = debounce(getData, 1000);
 
 export const startFetchingListCategories = () => {
   return {
@@ -262,6 +266,54 @@ export const fetchListOrganizers = () => {
       );
     } catch (error) {
       dispatch(errorFetchingListOrganizers());
+    }
+  };
+};
+// admin
+
+export const startFetchingListAdmins = () => {
+  return {
+    type: START_FETCHING_LISTS_ADMINS,
+  };
+};
+
+export const successFetchingListAdmins = ({ admins }) => {
+  return {
+    type: SUCCESS_FETCHING_LISTS_ADMINS,
+    admins,
+  };
+};
+
+export const errorFetchingListAdmins = () => {
+  return {
+    type: ERROR_FETCHING_LISTS_ADMINS,
+  };
+};
+
+export const fetchListAdmins = () => {
+  return async (dispatch) => {
+    dispatch(startFetchingListAdmins());
+
+    try {
+      let res = await debounceFetchListAdmins('/cms/users');
+
+      let _temp = [];
+
+      res.data.data.forEach((res) => {
+        _temp.push({
+          name: res.name,
+          email: res.email,
+          password: res.password,
+        });
+      });
+
+      dispatch(
+        successFetchingListAdmins({
+          admins: _temp,
+        })
+      );
+    } catch (error) {
+      dispatch(errorFetchingListAdmins());
     }
   };
 };

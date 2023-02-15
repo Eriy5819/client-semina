@@ -14,6 +14,9 @@ import {
   START_FETCHING_LISTS_ORGANIZERS,
   SUCCESS_FETCHING_LISTS_ORGANIZERS,
   ERROR_FETCHING_LISTS_ORGANIZERS,
+  START_FETCHING_LISTS_ADMINS,
+  ERROR_FETCHING_LISTS_ADMINS,
+  SUCCESS_FETCHING_LISTS_ADMINS,
 } from './constants';
 
 const statuslist = {
@@ -32,6 +35,10 @@ const initialState = {
   statusEvents: statuslist.idle,
   tickets: [],
   statusTickets: statuslist.idle,
+  organizers: [],
+  statusOrganizers: statuslist.idle,
+  admins: [],
+  statusAdmins: statuslist.idle,
 };
 
 export default function reducer(state = initialState, action) {
@@ -99,6 +106,19 @@ export default function reducer(state = initialState, action) {
         ...state,
         statusOrganizers: statuslist.success,
         organizers: action.organizers,
+      };
+
+    case START_FETCHING_LISTS_ADMINS:
+      return { ...state, statusAdmins: statuslist.process };
+
+    case ERROR_FETCHING_LISTS_ADMINS:
+      return { ...state, statusAdmins: statuslist.error };
+
+    case SUCCESS_FETCHING_LISTS_ADMINS:
+      return {
+        ...state,
+        statusAdmins: statuslist.success,
+        admins: action.admins,
       };
 
     default:

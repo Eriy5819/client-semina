@@ -21,7 +21,7 @@ const handleError = (error) => {
             token: res.data.data.token,
           })
         );
-        originalRequest.headers.Authorization = `Bearer${res.data.data.token}`;
+        originalRequest.headers.Authorization = `Bearer ${res.data.data.token}`;
 
         console.log('originalRequest');
         console.log(originalRequest);
@@ -29,6 +29,7 @@ const handleError = (error) => {
         return axios(originalRequest);
       })
       .catch((error) => {
+        console.log(error);
         window.location.href = '/login';
         localStorage.removeItem('auth');
       });
