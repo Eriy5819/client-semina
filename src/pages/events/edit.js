@@ -106,9 +106,9 @@ function EventsCreate() {
   const handleChange = async (e) => {
     if (e.target.name === 'avatar') {
       if (
-        e?.target?.files[0].type === 'image/jpg' ||
-        e?.target?.files[0].type === 'image/png' ||
-        e?.target?.files[0].type === 'image/jpeg'
+        e?.target?.files[0]?.type === 'image/jpg' ||
+        e?.target?.files[0]?.type === 'image/png' ||
+        e?.target?.files[0]?.type === 'image/jpeg'
       ) {
         var size = parseFloat(e.target.files[0].size / 3145728).toFixed(2);
 
